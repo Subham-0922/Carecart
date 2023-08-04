@@ -31,7 +31,7 @@ public class Orders {
 	@OneToMany(mappedBy = "orderId")
 	private Set<OrderDetails> orderDetails;
 	private String promoCode;
-	private LocalDate orderDate=LocalDate.now();
+	private LocalDate orderDate;
 	private LocalDate deliverDate;
 	private double totalOrderAmount;
 	@OneToOne(mappedBy = "orderId")

@@ -23,11 +23,15 @@ public class OrderDetails {
 	private long orderDetailsId;
 	@OneToOne
 	private Products productId;
+	
 	private int quantity;
 	@ManyToOne
 	private Orders orderId;
+	@ManyToOne
+	private Users user;
 	private LocalDate deliveryDate;
 	private boolean isDelivered;
+	private boolean isOrdered;//false=cart   |||     true=ordered
 	@Override
 	public int hashCode() {
 		return Objects.hash(orderDetailsId);

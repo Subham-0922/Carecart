@@ -75,5 +75,14 @@ public class GlobalException {
 		
 		
 	}
+	@ExceptionHandler(PromoException.class)
+	public ResponseEntity<MyExceptionHandler> myExpHandler(PromoException ie,WebRequest req)  {
+		System.out.println("inside myHandler method...");
+		
+		
+		return new ResponseEntity<MyExceptionHandler>(new MyExceptionHandler(LocalDateTime.now(),ie.getMessage(),req.getDescription(false)),HttpStatus.BAD_REQUEST);
+		
+		
+	}
 	
 }

@@ -7,4 +7,5 @@ import com.carecart.models.Users;
 @Repository
 public interface CustomerRepository extends JpaRepository<Users,Long>{
 	Users findByEmail(String email);
+	
 }

@@ -1,9 +1,12 @@
 package com.carecart.models;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,9 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
@@ -28,13 +29,17 @@ public class Users {
 	private String country;
 	private String city;
 	private String postalCode;
+	@Column(unique = true)
 	private String email;
 	private String password;
-	private String role;//either USER or ADMIN
+	private String role;// either USER or ADMIN
 	private LocalDate dateOfBirth;
-	private LocalDate dateOfEntered=LocalDate.now();
-	@OneToMany(mappedBy = "userId")
+	private LocalDate dateOfEntered = LocalDate.now();
+	@OneToMany(mappedBy = "userId" ,cascade = CascadeType.ALL)
 	private Set<Orders> orders;
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	private List<OrderDetails> ordersDetails;
+
 	public Users(String firstName, String lastName, String country, String city, String postalCode, String email,
 			String password, LocalDate dateOfBirth) {
 		super();
@@ -47,6 +52,7 @@ public class Users {
 		this.password = password;
 		this.dateOfBirth = dateOfBirth;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -58,10 +64,10 @@ public class Users {
 		Users other = (Users) obj;
 		return userId == other.userId && Objects.equals(email, other.email);
 	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(userId, email);
 	}
-	
-	
+
 }

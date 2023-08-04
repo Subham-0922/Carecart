@@ -10,4 +10,5 @@ import com.carecart.models.Products;
 @Repository
 public interface ProductRepository extends JpaRepository<Products, Long> {
 	List<Products> findByCategoryId(Category categoryId);
+	List<Products> findByProductNameContainingIgnoreCase(String productName);
 }

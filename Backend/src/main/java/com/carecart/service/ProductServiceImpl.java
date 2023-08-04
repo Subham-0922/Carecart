@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.carecart.dto.ProductUpdateDto;
 import com.carecart.exception.CategoryException;
 import com.carecart.exception.ProductException;
 import com.carecart.models.Category;
@@ -33,11 +34,15 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Products updateProduct(Products product) throws ProductException {
+	public Products updateProduct(ProductUpdateDto productDto) throws ProductException {
 		// TODO Auto-generated method stub
-		productRepository.findById(product.getProductId()).orElseThrow(()->new ProductException("Product not found"));
-		
-		return productRepository.save(product);
+		Products existingProduct=productRepository.findById(productDto.getProductId()).orElseThrow(()->new ProductException("Product not found"));
+		existingProduct.setBrand(productDto.getBrand());
+//		existingProduct.setCategoryId(product.getCategoryId());
+		existingProduct.setCostPrice(productDto.getCostPrice());
+		existingProduct.setProductName(productDto.getProductName());
+		existingProduct.setSalePrice(productDto.getSalePrice());
+		return productRepository.save(existingProduct);
 	}
 
 	@Override
@@ -54,6 +59,20 @@ public class ProductServiceImpl implements ProductService {
 		Category category=categoryRepository.findById(categoryid).orElseThrow(()->new CategoryException("Category not found"));
 		List<Products> products=productRepository.findByCategoryId(category);
 		if (products.isEmpty())throw new ProductException("Product list is empty");
+		return products;
+	}
+
+	@Override
+	public Products getProduct(long productId) throws ProductException {
+		// TODO Auto-generated method stub
+		Products existingProduct = productRepository.findById(productId).orElseThrow(()->new ProductException("Product not found with this id"));
+		return existingProduct;
+	}
+
+	@Override
+	public List<Products> searchProducts(String query) throws ProductException {
+		List<Products> products=productRepository.findByProductNameContainingIgnoreCase(query);
+		if(products.isEmpty())throw new ProductException("Products not available");
 		return products;
 	}
 	

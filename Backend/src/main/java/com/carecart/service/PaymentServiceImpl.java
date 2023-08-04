@@ -20,9 +20,12 @@ public class PaymentServiceImpl implements PaymentService {
 		// TODO Auto-generated method stub
 		Orders existingOrder=orderRepository.findById(orderId).orElseThrow(()->new OrderException("Order not Found"));
 		payment.setOrderId(existingOrder);
-		payment.setAllowed(true);
 		existingOrder.setPaymentAttached(true);
+		
 		existingOrder.setPaymentId(payment);
+		if(!payment.getType().equals("COD")) {
+			payment.setComplete(true);
+		}
 		orderRepository.save(existingOrder);
 		return paymentRepository.save(payment);
 	}
@@ -31,19 +34,11 @@ public class PaymentServiceImpl implements PaymentService {
 	public Payment makePayment(long paymentId) throws PaymentException, OrderException {
 		// TODO Auto-generated method stub
 		Payment existingPayment = paymentRepository.findById(paymentId).orElseThrow(()->new PaymentException("Payment history not Found"));
-		existingPayment.setComplete(true);
-		Orders order=existingPayment.getOrderId();
 		
-		orderRepository.save(order);
+		existingPayment.setComplete(true);
 		return paymentRepository.save(existingPayment);
 	}
 
-	@Override
-	public String toogleAllowance(long paymentId) throws PaymentException {
-		// TODO Auto-generated method stub
-		Payment existingPayment = paymentRepository.findById(paymentId).orElseThrow(()->new PaymentException("Payment history not Found"));
-		existingPayment.setAllowed(!existingPayment.isAllowed());
-		return "Now it is "+existingPayment.isAllowed();
-	}
+	
 
 }

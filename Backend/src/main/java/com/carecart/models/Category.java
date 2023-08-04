@@ -3,6 +3,7 @@ package com.carecart.models;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,7 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long categoryId;
 	private String category_name;
-	@OneToMany(mappedBy = "categoryId")
+	@OneToMany(mappedBy = "categoryId" ,cascade = CascadeType.ALL)
 	private Set<Products> products;
 	@Override
 	public boolean equals(Object obj) {

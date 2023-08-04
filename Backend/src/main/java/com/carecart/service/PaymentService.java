@@ -8,5 +8,5 @@ public interface PaymentService {
 	
 	Payment addPayment(Payment payment,long orderId)throws PaymentException,OrderException;
 	Payment makePayment(long paymentId) throws PaymentException,OrderException;
-	String toogleAllowance(long paymentId) throws PaymentException;
+//	String toogleAllowance(long paymentId) throws PaymentException;
 }

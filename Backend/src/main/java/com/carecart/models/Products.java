@@ -24,7 +24,8 @@ public class Products {
 	private String brand;
 	@ManyToOne
 	private Category categoryId;
-	private double price;
+	private double salePrice;
+	private double costPrice;
 	
 	@Override
 	public boolean equals(Object obj) {

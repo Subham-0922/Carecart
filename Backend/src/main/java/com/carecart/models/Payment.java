@@ -21,9 +21,7 @@ public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int paymentId;
-	@Enumerated(EnumType.STRING)
 	private String type;
-	private boolean isAllowed;
 	private boolean isComplete;
 	@OneToOne
 	private Orders orderId;

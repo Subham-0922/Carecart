@@ -1,8 +1,11 @@
 package com.carecart.service;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.carecart.dto.UserUpdateDto;
 import com.carecart.exception.UserException;
 import com.carecart.models.Users;
 import com.carecart.repository.CustomerRepository;
@@ -32,10 +35,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Users updateUser(Users user) throws UserException {
+	public Users updateUser(UserUpdateDto user) throws UserException {
 		Users existingUser=customerRepository.findById(user.getUserId()).orElseThrow( ()-> new UserException("User not found with this id"));
-		
-		return customerRepository.save(user);
+		existingUser.setFirstName(user.getFirstName());
+		existingUser.setLastName(user.getLastName());
+		existingUser.setCity(user.getCity());
+		existingUser.setCountry(user.getCountry());
+		existingUser.setPostalCode(user.getPostalCode());
+		return customerRepository.save(existingUser);
 	}
 
 	@Override
@@ -43,6 +50,14 @@ public class UserServiceImpl implements UserService {
 		Users existingUser=customerRepository.findById(id).orElseThrow( ()-> new UserException("User not found with this id"));
 		customerRepository.delete(existingUser);
 		return existingUser;
+	}
+
+	@Override
+	public List<Users> getAllUsers() throws UserException {
+		// TODO Auto-generated method stub
+		List<Users> users=customerRepository.findAll().stream().filter((a)->a.getRole()=="ROLE_USER").toList();
+		if(users.isEmpty())throw new UserException("Users not found");
+		return users;
 	}
 
 }
